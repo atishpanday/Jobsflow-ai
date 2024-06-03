@@ -11,6 +11,8 @@ const customComponents = {
   ul: (props: React.HTMLAttributes<HTMLElement>) => <ul className="list-disc list-inside my-4 pl-4">{props.children}</ul>,
   ol: (props: React.HTMLAttributes<HTMLElement>) => <ol className="list-decimal list-inside my-4 pl-4">{props.children}</ol>,
   li: (props: React.HTMLAttributes<HTMLElement>) => <li className="text-lg text-customblack">{props.children}</li>,
+
+  img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => <img className="my-4 w-full rounded-lg" src={props.src} alt={props.alt} />,
 }
 
 export default customComponents;
