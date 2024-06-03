@@ -1,9 +1,6 @@
-import fs from "fs/promises";
+import fs from "fs";
 import matter from "gray-matter";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
-import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
-import React from "react";
 
 export type PostType = {
   id: number;
@@ -15,15 +12,15 @@ export type PostType = {
   body: string;
 };
 
-export async function getPosts() {
-  const posts = await fs.readdir("./posts/");
+export const getPosts = async () => {
+  const posts = fs.readdirSync("./posts/");
 
   return Promise.all(
     posts
       .filter((file) => path.extname(file) === ".mdx")
       .map(async (file) => {
         const filePath = `./posts/${file}`;
-        const fileContent = await fs.readFile(filePath, "utf8");
+        const fileContent = await fs.readFileSync(filePath, "utf8");
         const { data, content } = matter(fileContent);
         // const body = await serialize(content);
 
@@ -32,7 +29,7 @@ export async function getPosts() {
   );
 }
 
-export async function getPost(slug: string) {
+export const getPost = async (slug: string) => {
   const posts = await getPosts();
   return posts.find((post) => post.slug === slug);
 }

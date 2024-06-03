@@ -2,9 +2,8 @@
 import { PostType } from '@/lib/posts';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
-export default function BlogItem({ id, username, title, date, description, slug, body }: PostType) {
+const BlogItem = ({ id, username, title, date, description, slug, body }: PostType) => {
   const router = useRouter();
   const gotoBlog = () => {
     router.push(`blogs/${slug}`);
@@ -18,7 +17,9 @@ export default function BlogItem({ id, username, title, date, description, slug,
       <p className="text-gray-500">{username}</p>
       <h1 className="text-xl uppercase font-bold bg-blue-green-gradient inline-block text-transparent bg-clip-text">{title}</h1>
       <p className="text-gray-500">{`Date posted: ${date}`}</p>
-      <p className="text-black-500">{description}</p>
+      <p className="text-customblack">{description}</p>
     </div>
   );
-}
+};
+
+export default BlogItem;

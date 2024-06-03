@@ -1,8 +1,8 @@
+import React from 'react'
 import { getPost } from '@/lib/posts'
-import { MDXProvider } from '@mdx-js/react';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { notFound } from 'next/navigation';
-import React from 'react'
+import customComponents from "../customComponents";
 
 export default async function Blog({ params }: { params: { slug: string } }) {
 
@@ -10,10 +10,11 @@ export default async function Blog({ params }: { params: { slug: string } }) {
   if (!post) {
     return notFound;
   }
+
   return (
     <div className="w-full flex flex-col space-y-4">
-      <div className="prose max-w-6xl mx-auto space-y-4">
-        <MDXRemote source={post.body} />
+      <div className="prose max-w-6xl mx-auto space-y-4 py-8">
+        <MDXRemote components={customComponents} source={post.body} />
       </div>
     </div>
   )

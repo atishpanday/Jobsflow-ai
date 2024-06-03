@@ -1,8 +1,7 @@
 import React from 'react'
 import Head from 'next/head';
-import BlogItem from './components/blogItem';
+import BlogItem from '../components/blogItem';
 import { PostType, getPosts } from '@/lib/posts';
-import CreateBlogButton from './components/createBlogButton';
 
 export default async function Blogs() {
 
@@ -17,7 +16,6 @@ export default async function Blogs() {
       </Head>
       <div className="w-full h-fit-content max-w-6xl mx-auto my-8 px-2 flex justify-between items-center">
         <h1 className="text-4xl font-bold text-customblack uppercase">Blog List</h1>
-        <CreateBlogButton />
       </div>
       <div className="w-full flex flex-col space-y-8 my-8">
         {posts.map((blog: PostType) => (
