@@ -11,7 +11,8 @@ export const POST = async (req: Request) => {
     const { messages } = await req.json();
     const result = await streamText({
         model: gemini("models/gemini-1.5-pro-latest"),
-        prompt: `Context:\n${context}\n\n${messages}`,
+        // prompt: `Context:\n${context}\n\n${messages}`,
+        messages
     });
     return result.toAIStreamResponse();
 };
