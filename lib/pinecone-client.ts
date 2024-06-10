@@ -14,7 +14,7 @@ export const getPineconeClient = async () => {
 export const createIndex = async (pc: Pinecone, indexName: string) => {
     await pc.createIndex({
         name: indexName,
-        dimension: 1536,
+        dimension: 1024,
         metric: 'cosine',
         spec: {
             serverless: {
