@@ -1,18 +1,17 @@
-import { streamText } from "ai";
-// import { createOpenAI } from "@ai-sdk/openai";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import context from "./context";
+import { Message } from "ai";
+import { callChain } from "@/lib/lanchain";
 
-const gemini = createGoogleGenerativeAI({
-    apiKey: process.env.GEMINI_API_KEY,
-})
+const formatMessage = (message: Message) => {
+    return `${message.role === "user" ? "Human" : "Assistant"}: ${message.content}`;
+};
 
 export const POST = async (req: Request) => {
     const { messages } = await req.json();
-    const result = await streamText({
-        model: gemini("models/gemini-1.5-pro-latest"),
-        // prompt: `Context:\n${context}\n\n${messages}`,
-        messages
-    });
-    return result.toAIStreamResponse();
-};
+    const question = messages[messages.length - 1].content;
+    console.log(question);
+    const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
+    console.log("Chat history: ", formattedPreviousMessages.join("\n"));
+    const streamingTextResponse = callChain(question, formattedPreviousMessages.join("\n"),);
+
+    return streamingTextResponse;
+}
