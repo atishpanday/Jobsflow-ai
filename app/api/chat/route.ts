@@ -1,17 +1,30 @@
 import { Message } from "ai";
-import { callChain } from "@/lib/lanchain";
+import { callChain } from "@/lib/langchain";
+import { StreamingTextResponse } from "ai";
 
 const formatMessage = (message: Message) => {
-    return `${message.role === "user" ? "Human" : "Assistant"}: ${message.content}`;
+    return `${message.role === "user" ? "human" : "AI"}: ${message.content}`;
 };
 
 export const POST = async (req: Request) => {
     const { messages } = await req.json();
     const question = messages[messages.length - 1].content;
-    console.log(question);
-    const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
-    console.log("Chat history: ", formattedPreviousMessages.join("\n"));
-    const streamingTextResponse = callChain(question, formattedPreviousMessages.join("\n"),);
+    const chat_history = messages.slice(0, messages.length - 1).map(formatMessage).join("\n");
 
-    return streamingTextResponse;
-}
+    const streamText = await callChain({ question: question, chat_history: chat_history });
+
+    // console.log(streamText);
+
+    const textEncoder = new TextEncoder();
+
+    const stream = new ReadableStream({
+        async start(controller) {
+            controller.enqueue(textEncoder.encode(streamText));
+            controller.close();
+        },
+    });
+
+    // const aiStream = async () => { for await (const chunk of stream) { return chunk.answer } };
+
+    return new StreamingTextResponse(stream);
+};

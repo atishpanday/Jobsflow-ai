@@ -1,15 +1,26 @@
 "use client";
-import { useChat } from "ai/react";
+import { Message } from "ai";
+import { useChat } from "@ai-sdk/react";
 import ReactMarkdown from 'react-markdown';
 
+export const initialMessages: Message[] = [
+    {
+        role: "assistant",
+        id: "0",
+        content: "Hi! I am your AI assistant. Ask me anything about this website!",
+    },
+];
+
 const Chat = () => {
-    const { messages, input, handleInputChange, handleSubmit } = useChat();
+    const { messages, input, handleInputChange, handleSubmit } = useChat({
+        initialMessages,
+        streamMode: "text",
+    });
     return (
         <div>
             {messages.map((m) => (
                 <div key={m.id}>
-                    {m.role === "user" ? "User: " : "AI: "}
-                    <ReactMarkdown>{m.content}</ReactMarkdown>
+                    <ReactMarkdown>{`${m.role === "user" ? "User: " : "AI: "} ${m.content}`}</ReactMarkdown>
                 </div>
             ))}
             <form onSubmit={handleSubmit}>
