@@ -27,7 +27,7 @@ async function* getMessageResponse(messages: Message[]) {
     if (!response.body) {
         return "No response received";
     }
-    // const chunk = await response.text();
+
     const textDecoder = new TextDecoder("utf-8");
     const reader = response.body?.getReader();
 
@@ -42,13 +42,7 @@ async function* getMessageResponse(messages: Message[]) {
 };
 
 function Chat() {
-    // const { messages, input, handleInputChange, handleSubmit } = useChat({
-    //     initialMessages,
-    //     streamMode: "text",
-    // });
-
     const [messages, setMessages] = useState<Message[]>(initialMessages);
-    const [lastAIMessage, setLastAIMessage] = useState<string | null>(null);
     const [input, setInput] = useState<string>("");
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -93,15 +87,12 @@ function Chat() {
     };
 
     return (
-        <div className="mx-auto max-w-md">
+        <div>
             {messages.map((m) => (
                 <div key={m.id}>
                     <ReactMarkdown>{`${m.role === "user" ? "User: " : "AI: "} ${m.content}`}</ReactMarkdown>
                 </div>
             ))}
-            {lastAIMessage && <div>
-                <ReactMarkdown>{`${"AI: "} ${lastAIMessage}`}</ReactMarkdown>
-            </div>}
             <form onSubmit={handleSubmit}>
                 <input
                     value={input}
