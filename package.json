@@ -6,34 +6,20 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
-        "prepare:data": "DOTENV_CONFIG_PATH=.env.local tsx -r dotenv/config ./scripts/embed-pinecone-data.ts"
+        "lint": "next lint"
     },
     "dependencies": {
-        "@ai-sdk/google": "^0.0.18",
-        "@ai-sdk/openai": "^0.0.20",
-        "@langchain/cohere": "^0.0.11",
-        "@langchain/community": "^0.2.9",
-        "@langchain/google-genai": "^0.0.17",
-        "@langchain/openai": "^0.1.2",
-        "@langchain/pinecone": "^0.0.7",
         "@mdx-js/loader": "^3.0.1",
         "@mdx-js/react": "^3.0.1",
         "@next/mdx": "^14.2.3",
-        "@pinecone-database/pinecone": "^2.2.2",
         "@types/cheerio": "^0.22.35",
         "@types/mdx": "^2.0.13",
-        "ai": "^3.1.31",
-        "cheerio": "^1.0.0-rc.12",
-        "dotenv": "^16.4.5",
         "gray-matter": "^4.0.3",
-        "langchain": "^0.2.5",
         "next": "14.2.3",
         "next-mdx-remote": "^5.0.0",
         "react": "^18",
         "react-dom": "^18",
-        "react-markdown": "^9.0.1",
-        "zod": "^3.23.8"
+        "react-markdown": "^9.0.1"
     },
     "devDependencies": {
         "@types/node": "^20",
@@ -43,7 +29,6 @@
         "eslint-config-next": "14.2.3",
         "postcss": "^8",
         "tailwindcss": "^3.4.1",
-        "tsx": "^4.15.1",
         "typescript": "^5"
     }
 }
