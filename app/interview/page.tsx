@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
+import ReactMarkDown from "react-markdown"
 
 export default function Interview() {
     const [isRecording, setIsRecording] = useState(false);
+    const [receivedText, setReceivedText] = useState("");
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const socketRef = useRef<WebSocket | null>(null);
 
@@ -18,7 +20,7 @@ export default function Interview() {
 
         mediaRecorderRef.current = mediaRecorder;
 
-        socketRef.current = new WebSocket('ws://localhost:8000/api/interview');
+        socketRef.current = new WebSocket("ws://localhost:8000/api/interview");
 
         socketRef.current.onopen = () => {
             mediaRecorder.start(100);
@@ -34,6 +36,24 @@ export default function Interview() {
 
             setIsRecording(true);
         };
+
+        const speakText = (text: string) => {
+            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+            utterance.onend = () => {
+                mediaRecorder.resume();
+            };
+        };
+
+        socketRef.current.onmessage = (event) => {
+            const receivedTextFromWS = event.data;
+            setReceivedText((prevText) => prevText + receivedTextFromWS + "\n");
+            mediaRecorderRef.current?.pause();
+            if (receivedTextFromWS.split(":")[0] === "AI Interviewer") {
+                speakText(receivedTextFromWS.split(":")[1]);
+            }
+        };
+
 
         socketRef.current.onclose = () => {
             setIsRecording(false);
@@ -52,6 +72,7 @@ export default function Interview() {
             <button onClick={isRecording ? stopRecording : startRecording}>
                 {isRecording ? 'Stop Recording' : 'Start Recording'}
             </button>
+            <p><ReactMarkDown>{receivedText}</ReactMarkDown></p>
         </div>
     );
 }
